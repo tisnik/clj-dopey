@@ -14,7 +14,6 @@
 
 (require '[irclj.core :as irc])
 
-(require '[clj-dopey.core     :as core])
 (require '[clj-dopey.dyncfg   :as dyncfg])
 (require '[clj-dopey.dictionary :as dictionary])
 
