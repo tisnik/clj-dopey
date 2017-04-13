@@ -1,0 +1,64 @@
+;
+;  (C) Copyright 2017  Pavel Tisnovsky
+;
+;  All rights reserved. This program and the accompanying materials
+;  are made available under the terms of the Eclipse Public License v1.0
+;  which accompanies this distribution, and is available at
+;  http://www.eclipse.org/legal/epl-v10.html
+;
+;  Contributors:
+;      Pavel Tisnovsky
+;
+
+(ns clj-dopey.importer-test
+  (:require [clojure.test :refer :all]
+            [clj-dopey.importer :refer :all]))
+
+;
+; Common functions used by tests.
+;
+
+(defn callable?
+    "Test if given function-name is bound to the real function."
+    [function-name]
+    (clojure.test/function? function-name))
+
+;
+; Tests for various functions
+;
+
+(deftest test-read-csv-existence
+    "Check that the clj-dopey.importer/read-csv definition exists."
+    (testing "if the clj-dopey.importer/read-csv definition exists."
+        (is (callable? 'clj-dopey.importer/read-csv))))
+
+
+(deftest test-parse-boolean-existence
+    "Check that the clj-dopey.importer/parse-boolean definition exists."
+    (testing "if the clj-dopey.importer/parse-boolean definition exists."
+        (is (callable? 'clj-dopey.importer/parse-boolean))))
+
+
+(deftest test-parse-use-it-existence
+    "Check that the clj-dopey.importer/parse-use-it definition exists."
+    (testing "if the clj-dopey.importer/parse-use-it definition exists."
+        (is (callable? 'clj-dopey.importer/parse-use-it))))
+
+
+(deftest test-get-word-class-existence
+    "Check that the clj-dopey.importer/get-word-class definition exists."
+    (testing "if the clj-dopey.importer/get-word-class definition exists."
+        (is (callable? 'clj-dopey.importer/get-word-class))))
+
+
+(deftest test-get-source-existence
+    "Check that the clj-dopey.importer/get-source definition exists."
+    (testing "if the clj-dopey.importer/get-source definition exists."
+        (is (callable? 'clj-dopey.importer/get-source))))
+
+
+(deftest test-import-data-existence
+    "Check that the clj-dopey.importer/import-data definition exists."
+    (testing "if the clj-dopey.importer/import-data definition exists."
+        (is (callable? 'clj-dopey.importer/import-data))))
+
