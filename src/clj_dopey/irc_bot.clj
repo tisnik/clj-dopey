@@ -60,6 +60,29 @@
     [input]
     (dictionary/find-word input))
 
+(defn use-wildchards?
+    [input]
+    (or (.startsWith input "*")
+        (.endsWith input "*")))
+
+(defn one-word-like-this?
+    [input]
+    (if (use-wildchards? input)
+        (= (dictionary/words-like-this input) 1)))
+
+(defn more-words-like-this?
+    [input]
+    (if (use-wildchards? input)
+        (> (dictionary/words-like-this input) 1)))
+
+(defn return-word-like-this
+    [input]
+    (dictionary/find-word-like-this input))
+
+(defn return-more-words-like-this
+    [input]
+    (dictionary/find-words-like-this input))
+
 (defn dictionary-status
     []
     (str "Number of terms in dictionary: " (dictionary/term-count)))
@@ -80,9 +103,10 @@
                           "status"   (dictionary-status)
                           "rainbow"   (apply str (for [color (range 16)]
                                                      (str (char 3) (format "%02d" color) (format "test%02d " color) (char 3) "99")))
-                          (if (is-word-from-dictionary? input)
-                              (return-words-from-dictionary input)
-                              "Command not understood or term not found"))]
+                          (cond (is-word-from-dictionary? input) (return-words-from-dictionary input)
+                                (one-word-like-this? input)      (return-word-like-this input)
+                                (more-words-like-this? input)    (return-more-words-like-this input)
+                                :else                            "Command not understood or term not found"))]
         {:prefix prefix
          :response response})
         (catch Exception e
