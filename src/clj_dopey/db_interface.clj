@@ -47,21 +47,29 @@
                      :copyrighted     copyrighted
                      :source          source}))
 
+(defn update-word
+    [word]
+    (.toLowerCase word))
+
+(defn add-where-clause
+    [word]
+    (str "where lower(term)=?"))
+
 (defn select-words
     [word]
     (jdbc/query db-spec/dopey-db
-        ["select term, description,
+        [(str "select term, description,
                  (select class from classes where classes.id=dictionary.class) as class,
                  use, incorrect_forms, correct_forms, see_also, internal, verified, copyrighted,
                  (select source from sources where sources.id=dictionary.source) as source,
                  (select product from products where products.id=dictionary.product) as product
-                 from dictionary where lower(term)=?" (.toLowerCase word)]))
+                 from dictionary " (add-where-clause word)) (update-word word)]))
 
 (defn select-word-count
     [word]
     (->
         (jdbc/query db-spec/dopey-db
-            ["select count(*) as cnt from dictionary where lower(term)=?" (.toLowerCase word)])
+            [(str "select count(*) as cnt from dictionary " (add-where-clause word)) (update-word word)])
         first
         :cnt))
 
