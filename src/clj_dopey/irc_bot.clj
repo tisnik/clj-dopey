@@ -36,12 +36,6 @@
         incoming-message
         (assoc incoming-message :target (:nick incoming-message))))
 
-(defn format-schedule
-    [schedule]
-    (apply str (for [s schedule]
-       ;(str (subs (-> s :formatted :from) 0 5) "-" (subs (-> s :formatted :to) 0 5) ", "))))
-       (str (subs (-> s :formatted :from) 0 5) "  "))))
-
 (defn is-word-from-dictionary?
     [input]
     (dictionary/word-exist? input))

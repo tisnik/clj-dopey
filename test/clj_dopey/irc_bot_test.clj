@@ -45,12 +45,6 @@
         (is (callable? 'clj-dopey.irc-bot/create-reply))))
 
 
-(deftest test-format-schedule-existence
-    "Check that the clj-dopey.irc-bot/format-schedule definition exists."
-    (testing "if the clj-dopey.irc-bot/format-schedule definition exists."
-        (is (callable? 'clj-dopey.irc-bot/format-schedule))))
-
-
 (deftest test-is-word-from-dictionary?-existence
     "Check that the clj-dopey.irc-bot/is-word-from-dictionary? definition exists."
     (testing "if the clj-dopey.irc-bot/is-word-from-dictionary? definition exists."
