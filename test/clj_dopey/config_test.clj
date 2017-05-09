@@ -12,7 +12,8 @@
 
 (ns clj-dopey.config-test
   (:require [clojure.test :refer :all]
-            [clj-dopey.config :refer :all]))
+            [clj-dopey.config :refer :all]
+            [clojure.pprint :as pprint]))
 
 ;
 ; Common functions used by tests.
@@ -177,4 +178,11 @@
         (parse-float "")
         (parse-float "xyzzy")
         (parse-float "-1xyzzy")))
+
+(deftest test-print-configuration
+    "Check the behaviour of function zg.config/print-configuration."
+        ; use mock instead of clojure.pprint/pprint
+        (with-redefs [pprint/pprint (fn [configuration] (str configuration))]
+            (is (not (nil? (print-configuration {:first 1 :second 2}))))
+            (is (= (type (print-configuration   {:first 1 :second 2})) java.lang.String))))
 
