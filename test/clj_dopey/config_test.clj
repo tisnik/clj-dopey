@@ -129,3 +129,52 @@
         (parse-int "xyzzy")))
        ; (parse-int "+1"))) ; removed, not compatible with all supported JDKs
 
+(deftest test-parse-float-zero
+    "Check the behaviour of function zg.config/parse-float."
+    (are [x y] (== x y)
+        0.0 (parse-float "0")
+        0.0 (parse-float "00")
+        0.0 (parse-float "000")
+        0.0 (parse-float "-0")
+        0.0 (parse-float "-00")
+        0.0 (parse-float "-000")))
+
+(deftest test-parse-float-positive-values
+    "Check the behaviour of function zg.config/parse-float."
+    (are [x y] (== x y)
+        0.5 (parse-float "0.5")
+        1.0 (parse-float "1.0")
+        1.5 (parse-float "1.5")
+        2.0 (parse-float "2")
+        1000.0 (parse-float "1000")
+        10000.0 (parse-float "10000")
+        1e10 (parse-float "10000000000")
+        1e10 (parse-float "1e10")))
+
+(deftest test-parse-float-negative-values
+    "Check the behaviour of function zg.config/parse-float."
+    (are [x y] (== x y)
+        -0.5 (parse-float "-0.5")
+        -1.0 (parse-float "-1.0")
+        -1.5 (parse-float "-1.5")
+        -2.0 (parse-float "-2")
+        -1000.0 (parse-float "-1000")
+        -10000.0 (parse-float "-10000")
+        -1e10 (parse-float "-10000000000")
+        -1e10 (parse-float "-1e10")))
+
+(deftest test-parse-float-min-value
+    "Check the behaviour of function zg.config/parse-float."
+    (is (== Float/MIN_VALUE (parse-float "0x0.000002P-126f"))))
+
+(deftest test-parse-float-max-value
+    "Check the behaviour of function zg.config/parse-float."
+    (is (== Float/MAX_VALUE (parse-float "0x1.fffffeP+127f"))))
+
+(deftest test-parse-float-bad-input
+    "Check the behaviour of function zg.config/parse-float."
+    (are [x] (thrown? NumberFormatException x)
+        (parse-float "")
+        (parse-float "xyzzy")
+        (parse-float "-1xyzzy")))
+
