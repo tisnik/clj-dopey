@@ -62,3 +62,70 @@
     (testing "if the clj-dopey.config/print-configuration definition exists."
         (is (callable? 'clj-dopey.config/print-configuration))))
 
+;
+; Test for function behaviours
+;
+
+(deftest test-parse-boolean
+    "Check the behaviour of function emender-jenkins.config/parse-boolean."
+    (are [x y] (= x y)
+        true (parse-boolean "true")
+        true (parse-boolean "True")
+        false (parse-boolean "false")
+        false (parse-boolean "False")
+        false (parse-boolean "")
+        false (parse-boolean "unknown")
+        false (parse-boolean nil)))
+
+(deftest test-parse-int-zero
+    "Check the behaviour of function zg.config/parse-int."
+    (are [x y] (== x y)
+        0 (parse-int "0")
+        0 (parse-int "00")
+        0 (parse-int "000")
+        0 (parse-int "-0")
+        0 (parse-int "-00")
+        0 (parse-int "-000")))
+
+(deftest test-parse-int-positive-int
+    "Check the behaviour of function zg.config/parse-int."
+    (are [x y] (== x y)
+        1          (parse-int "1")
+        2          (parse-int "2")
+        42         (parse-int "42")
+        65535      (parse-int "65535")
+        65536      (parse-int "65536")
+        2147483646 (parse-int "2147483646")))
+
+(deftest test-parse-int-negative-int
+    "Check the behaviour of function zg.config/parse-int."
+    (are [x y] (== x y)
+        -1          (parse-int "-1")
+        -2          (parse-int "-2")
+        -42         (parse-int "-42")
+        -65535      (parse-int "-65535")
+        -65536      (parse-int "-65536")
+        -2147483647 (parse-int "-2147483647")))
+
+(deftest test-parse-int-min-int
+    "Check the behaviour of function zg.config/parse-int."
+    (is (== Integer/MIN_VALUE (parse-int "-2147483648"))))
+
+(deftest test-parse-int-max-int
+    "Check the behaviour of function zg.config/parse-int."
+    (is (== Integer/MAX_VALUE (parse-int "2147483647"))))
+
+(deftest test-parse-int-overflow
+    "Check the behaviour of function zg.config/parse-int."
+    (are [x] (thrown? NumberFormatException x)
+        (parse-int "2147483648")
+        (parse-int "-2147483649")))
+
+(deftest test-parse-int-bad-input
+    "Check the behaviour of function zg.config/parse-int."
+    (are [x] (thrown? NumberFormatException x)
+        (parse-int "")
+        (parse-int " ")
+        (parse-int "xyzzy")))
+       ; (parse-int "+1"))) ; removed, not compatible with all supported JDKs
+
