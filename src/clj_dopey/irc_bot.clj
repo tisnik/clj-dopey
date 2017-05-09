@@ -17,16 +17,6 @@
 (require '[clj-dopey.dyncfg   :as dyncfg])
 (require '[clj-dopey.dictionary :as dictionary])
 
-(defn load-data-file
-    [filename]
-    (-> filename
-        slurp
-        clojure.string/split-lines))
-
-(defn load-vocabulary
-    [filename]
-    (into [] (load-data-file filename)))
-
 (defn message-to-channel?
     [message]
     (.startsWith (:target message) "#"))
