@@ -27,18 +27,6 @@
 ; Tests for various functions
 ;
 
-(deftest test-load-data-file-existence
-    "Check that the clj-dopey.irc-bot/load-data-file definition exists."
-    (testing "if the clj-dopey.irc-bot/load-data-file definition exists."
-        (is (callable? 'clj-dopey.irc-bot/load-data-file))))
-
-
-(deftest test-load-vocabulary-existence
-    "Check that the clj-dopey.irc-bot/load-vocabulary definition exists."
-    (testing "if the clj-dopey.irc-bot/load-vocabulary definition exists."
-        (is (callable? 'clj-dopey.irc-bot/load-vocabulary))))
-
-
 (deftest test-message-to-channel?-existence
     "Check that the clj-dopey.irc-bot/message-to-channel? definition exists."
     (testing "if the clj-dopey.irc-bot/message-to-channel? definition exists."
@@ -103,4 +91,18 @@
     "Check that the clj-dopey.irc-bot/start-irc-bot definition exists."
     (testing "if the clj-dopey.irc-bot/start-irc-bot definition exists."
         (is (callable? 'clj-dopey.irc-bot/start-irc-bot))))
+
+;
+; Tests for various functions
+;
+
+(deftest test-message-to-channel?
+    "Check the behaviour of function clj-dopey.irc-bot/message-to-channel?"
+    (testing "the function message-to-channel?"
+        (is (message-to-channel? {:target "#"}))
+        (is (message-to-channel? {:target "#channel"}))
+        (is (message-to-channel? {:target "#channel message"}))
+        (is (not (message-to-channel? {:target ""})))
+        (is (not (message-to-channel? {:target "channel"})))
+        (is (not (message-to-channel? {:target "channel message"})))))
 
