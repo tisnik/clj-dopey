@@ -138,3 +138,13 @@
             {:target "#channel message"}   {:target "#channel message"}
             {:target "nick" :nick "nick"}  {:target "" :nick "nick"})))
 
+(deftest test-use-wildchars?
+    "Check the behaviour of function clj-dopey.irc-bot/use-wildchars?"
+    (testing "the function use-wildchars?"
+        (are [x y] (= x (use-wildchars? y))
+            true "*word"
+            true "word*"
+            true "*word*"
+            true "*"
+            false "word")))
+
