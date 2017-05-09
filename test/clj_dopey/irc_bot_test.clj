@@ -129,3 +129,12 @@
         (is (not (message-for-me? "bot" "?" {:text "?" :target ""})))
         (is (not (message-for-me? "bot" "?" {:text "" :target ""})))))
 
+(deftest test-create-reply
+    "Check the behaviour of function clj-dopey.irc-bot/create-reply"
+    (testing "the function create-reply"
+        (are [x y] (= x (create-reply y))
+            {:target "#"}                  {:target "#"}
+            {:target "#channel"}           {:target "#channel"}
+            {:target "#channel message"}   {:target "#channel message"}
+            {:target "nick" :nick "nick"}  {:target "" :nick "nick"})))
+
