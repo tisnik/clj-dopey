@@ -125,11 +125,6 @@
            (if (message-for-me? @dyncfg/bot-nick (-> @dyncfg/configuration :bot :prefix) incoming-message)
                (reply-to-incoming-message connection text target nick host command incoming-message))))
 
-(defn send-message
-    [recipients target message-text]
-    (let [message {:target target :command "PRIVMSG"}]
-        (irc/reply @dyncfg/connection message (str recipients " " message-text))))
-
 (defn start-irc-bot
     [configuration]
     (let [server   (:name configuration)
