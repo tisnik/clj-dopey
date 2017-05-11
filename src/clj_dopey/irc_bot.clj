@@ -100,18 +100,19 @@
             {:prefix ""
              :response ""})))
 
+(defn send-reply
+    [connection reply output response]
+    (irc/reply connection reply (str (:prefix output) response)))
+
 (defn reply-to-incoming-message
     [connection text target nick host command incoming-message]
     (let [reply  (create-reply incoming-message)
           output (prepare-reply-text incoming-message nick text)]
           (if (seq? (:response output))
               (doseq [r (:response output)]
-         	 (irc/reply connection reply
-         		  (str (:prefix output) r)))
-              (irc/reply connection reply
-    			  (str (:prefix output) (:response output))
-))))
-    
+                 (send-reply connection reply output r))
+              (send-reply connection reply output (:response output)))))
+
 (defn on-incoming-message
     [connection incoming-message]
     (let [{text    :text
