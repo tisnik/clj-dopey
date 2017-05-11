@@ -73,22 +73,33 @@
     []
     (str "Number of terms in dictionary: " (dictionary/term-count)))
 
+(defn get-input
+    [in-channel? input-text]
+    (if in-channel?
+        (if (.startsWith input-text (-> @dyncfg/configuration :bot :prefix))
+            (subs input-text 1)
+            (subs input-text (+ 2 (count @dyncfg/bot-nick))))
+        input-text))
+
+(defn get-prefix
+    [in-channel? nick]
+    (if in-channel? (str nick ": ")))
+
+(defn get-rainbow-as-message
+    []
+    (apply str (for [color (range 16)]
+        (str (char 3) (format "%02d" color) (format "test%02d " color) (char 3) "99"))))
+
 (defn prepare-reply-text
     [incomming-message nick input-text]
     (try
     (let [in-channel? (message-to-channel? incomming-message)
-          modules     (-> @dyncfg/configuration :modules)
-          input       (if in-channel?
-                          (if (.startsWith input-text (-> @dyncfg/configuration :bot :prefix))
-                              (subs input-text 1)
-                              (subs input-text (+ 2 (count @dyncfg/bot-nick))))
-                          input-text)
-          prefix      (if in-channel? (str nick ": "))
+          input       (get-input in-channel? input-text)
+          prefix      (get-prefix in-channel? nick)
           response    (condp = input
                           "help"     (-> @dyncfg/configuration :bot :help)
                           "status"   (dictionary-status)
-                          "rainbow"   (apply str (for [color (range 16)]
-                                                     (str (char 3) (format "%02d" color) (format "test%02d " color) (char 3) "99")))
+                          "rainbow"  (get-rainbow-as-message)
                           (cond (is-word-from-dictionary? input) (return-words-from-dictionary input)
                                 (one-word-like-this? input)      (return-word-like-this input)
                                 (more-words-like-this? input)    (return-more-words-like-this input)

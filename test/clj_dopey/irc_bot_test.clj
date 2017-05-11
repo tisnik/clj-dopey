@@ -255,3 +255,13 @@
             "test" false "test"
             "test" true  "?test"
             "test" true  "bot: test")))
+
+(deftest test-prepare-reply-text-unknown-command
+    "Check the behaviour of function clj-dopey.irc-bot/prepare-reply-text"
+    (testing "the function prepare-reply-text"
+        (reset! dyncfg/configuration {:bot {:prefix "?" :help "help message"}}) 
+        (reset! dyncfg/bot-nick "bot")
+        (is (= (prepare-reply-text  {:target ""} "" "xyzzy")    {:prefix nil :response "Command not understood or term not found"}))
+        (is (= (prepare-reply-text  {:target ""} "bot" "xyzzy") {:prefix nil :response "Command not understood or term not found"}))))
+
+
