@@ -208,3 +208,21 @@
             (is (not (one-word-like-this? ""))) ; no wildchars
 )))
 
+(deftest test-more-words-like-this?
+    "Check the behaviour of function clj-dopey.irc-bot/more-words-like-this?"
+    (testing "the function more-words-like-this?"
+        (with-redefs [dictionary/words-like-this (fn [input] 42)]
+            (is (more-words-like-this? "test*"))
+            (is (more-words-like-this? "*test"))
+            (is (more-words-like-this? "*test*"))
+            (is (more-words-like-this? "*")))
+        (with-redefs [dictionary/words-like-this (fn [input] 1)]
+            (is (not (more-words-like-this? "test*")))
+            (is (not (more-words-like-this? "*test")))
+            (is (not (more-words-like-this? "*test*")))
+            (is (not (more-words-like-this? "*"))))
+        (with-redefs [dictionary/words-like-this (fn [input] nil)]
+            (is (not (more-words-like-this? "test"))) ; no wildchars
+            (is (not (more-words-like-this? ""))) ; no wildchars
+)))
+
