@@ -11,8 +11,9 @@
 ;
 
 (ns clj-dopey.irc-bot-test
-  (:require [clojure.test :refer :all]
-            [clj-dopey.irc-bot :refer :all]))
+  (:require [clojure.test         :refer :all]
+            [clj-dopey.irc-bot    :refer :all]
+            [clj-dopey.dictionary :as dictionary]))
 
 ;
 ; Common functions used by tests.
@@ -51,6 +52,24 @@
         (is (callable? 'clj-dopey.irc-bot/is-word-from-dictionary?))))
 
 
+(deftest test-use-wildchars?-existence
+    "Check that the clj-dopey.irc-bot/use-wildchars? definition exists."
+    (testing "if the clj-dopey.irc-bot/use-wildchars? definition exists."
+        (is (callable? 'clj-dopey.irc-bot/use-wildchars?))))
+
+
+(deftest test-one-word-like-this?-existence
+    "Check that the clj-dopey.irc-bot/one-word-like-this? definition exists."
+    (testing "if the clj-dopey.irc-bot/one-word-like-this? definition exists."
+        (is (callable? 'clj-dopey.irc-bot/one-word-like-this?))))
+
+
+(deftest test-more-words-like-this?-existence
+    "Check that the clj-dopey.irc-bot/more-words-like-this? definition exists."
+    (testing "if the clj-dopey.irc-bot/more-words-like-this? definition exists."
+        (is (callable? 'clj-dopey.irc-bot/more-words-like-this?))))
+
+
 (deftest test-return-words-from-dictionary-existence
     "Check that the clj-dopey.irc-bot/return-words-from-dictionary definition exists."
     (testing "if the clj-dopey.irc-bot/return-words-from-dictionary definition exists."
@@ -73,12 +92,6 @@
     "Check that the clj-dopey.irc-bot/on-incoming-message definition exists."
     (testing "if the clj-dopey.irc-bot/on-incoming-message definition exists."
         (is (callable? 'clj-dopey.irc-bot/on-incoming-message))))
-
-
-(deftest test-send-message-existence
-    "Check that the clj-dopey.irc-bot/send-message definition exists."
-    (testing "if the clj-dopey.irc-bot/send-message definition exists."
-        (is (callable? 'clj-dopey.irc-bot/send-message))))
 
 
 (deftest test-start-irc-bot-existence
