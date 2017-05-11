@@ -13,16 +13,17 @@
 (ns clj-dopey.core
   (:gen-class))
 
-(require '[clojure.pprint :as pprint])
+(require '[clojure.pprint        :as pprint])
 
-(require '[irclj.core :as irc])
+(require '[irclj.core            :as irc])
 
-(require '[clojure.tools.cli   :as cli])
+(require '[clojure.tools.cli     :as cli])
+(require '[clojure.tools.logging :as log])
 
-(require '[clj-dopey.config   :as config])
-(require '[clj-dopey.irc-bot  :as irc-bot])
-(require '[clj-dopey.dyncfg   :as dyncfg])
-(require '[clj-dopey.importer :as importer])
+(require '[clj-dopey.config      :as config])
+(require '[clj-dopey.irc-bot     :as irc-bot])
+(require '[clj-dopey.dyncfg      :as dyncfg])
+(require '[clj-dopey.importer    :as importer])
 
 (def cli-options
     "Definitions of all command line options that are  currenty supported."
@@ -46,11 +47,13 @@
 (defn -main
     "Entry point to this bot."
     [& args]
+    (log/info "Starting the application")
     (let [all-options (cli/parse-opts args cli-options)
           options     (all-options :options)
           show-help?  (options :help)
           import?     (options :import)]
           (cond show-help? (show-help (:summary all-options))
                 import?    (importer/import-data import?)
-                :else      (start-bot))))
+                :else      (start-bot)))
+    (log/info "Exiting from the application"))
 
