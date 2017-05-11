@@ -14,8 +14,10 @@
 
 (require '[irclj.core :as irc])
 
-(require '[clj-dopey.dyncfg   :as dyncfg])
-(require '[clj-dopey.dictionary :as dictionary])
+(require '[clojure.tools.logging :as log])
+
+(require '[clj-dopey.dyncfg      :as dyncfg])
+(require '[clj-dopey.dictionary  :as dictionary])
 
 (defn message-to-channel?
     [message]
@@ -94,7 +96,7 @@
         {:prefix prefix
          :response response})
         (catch Exception e
-            (println (.getMessage e))
+            (log/error e "prepare-reply-text")
             {:prefix ""
              :response ""})))
 
@@ -105,8 +107,8 @@
            nick    :nick
            host    :host
            command :command} incoming-message]
-           (println "Received message from" nick "to" target ":" text "(" host command ")")
-           (println incoming-message)
+           (log/info (str "Received message from" nick "to" target ":" text "(" host command ")"))
+           (log/info incoming-message)
            (if (message-for-me? @dyncfg/bot-nick (-> @dyncfg/configuration :bot :prefix) incoming-message)
                (let [reply  (create-reply incoming-message)
                      output (prepare-reply-text incoming-message nick text)]
@@ -130,14 +132,14 @@
           channels (:channels configuration)
           chanlist (clojure.string/split channels #" ")
           nick     (:nick configuration)]
-        (println "Connecting to" server "on port" port)
+        (log/info "Connecting to" server "on port" port)
         (let [conn (irc/connect server port nick
                                 :callbacks {:privmsg on-incoming-message})]
-            (println "Connected, joining to channels" channels)
+            (log/info "Connected, joining to channels" channels)
             (reset! dyncfg/connection conn)
             (reset! dyncfg/bot-nick nick)
             (doseq [channel chanlist]
-                (println channel)
+                (log/info channel)
                 (irc/join @dyncfg/connection (clojure.string/trim channel)))
-            (println "Connected..."))))
+            (log/info "Connected..."))))
 

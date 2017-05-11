@@ -55,5 +55,5 @@
           (cond show-help? (show-help (:summary all-options))
                 import?    (importer/import-data import?)
                 :else      (start-bot)))
-    (log/info "Exiting from the application"))
+    (log/info "Exiting from the main function"))
 
