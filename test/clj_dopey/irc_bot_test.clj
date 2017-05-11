@@ -190,6 +190,18 @@
         (with-redefs [dictionary/find-word (fn [input] (dictionary/correct-forms test-word))]
             (is (= (return-words-from-dictionary "test") (dictionary/correct-forms test-word))))))
 
+(deftest test-return-word-like-this
+    "Check the behaviour of function clj-dopey.irc-bot/return-word-like-this"
+    (testing "the function return-word-like-this"
+        (with-redefs [dictionary/find-word-like-this (fn [input] input)]
+            (is (= (return-word-like-this "test") "test")))))
+
+(deftest test-return-more-words-like-this
+    "Check the behaviour of function clj-dopey.irc-bot/return-more-words-like-this"
+    (testing "the function return-more-words-like-this"
+        (with-redefs [dictionary/find-words-like-this (fn [input] ["one" "two"])]
+            (is (= (return-more-words-like-this "test") ["one" "two"])))))
+
 (deftest test-one-word-like-this?
     "Check the behaviour of function clj-dopey.irc-bot/one-word-like-this?"
     (testing "the function one-word-like-this?"
