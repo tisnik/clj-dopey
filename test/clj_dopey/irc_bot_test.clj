@@ -264,4 +264,12 @@
         (is (= (prepare-reply-text  {:target ""} "" "xyzzy")    {:prefix nil :response "Command not understood or term not found"}))
         (is (= (prepare-reply-text  {:target ""} "bot" "xyzzy") {:prefix nil :response "Command not understood or term not found"}))))
 
+(deftest test-prepare-reply-text-help-message
+    "Check the behaviour of function clj-dopey.irc-bot/prepare-reply-text"
+    (testing "the function prepare-reply-text"
+        (reset! dyncfg/configuration {:bot {:prefix "?" :help "help message"}}) 
+        (reset! dyncfg/bot-nick "bot")
+        (is (= (prepare-reply-text  {:target ""} "" "help")     {:prefix nil :response "help message"}))
+        (is (= (prepare-reply-text  {:target ""} "bot" "help")  {:prefix nil :response "help message"}))
+        (is (= (prepare-reply-text  {:target "#channel"} "bot" "bot: help") {:prefix "bot: " :response "help message"}))))
 
