@@ -161,3 +161,32 @@
             true "*"
             false "word")))
 
+(deftest test-is-word-from-dictionary?
+    "Check the behaviour of function clj-dopey.irc-bot/is-word-from-dictionary?"
+    (testing "the function is-word-from-dictionary?"
+        (with-redefs [dictionary/word-exist? (fn [input] false)]
+            (is (not (is-word-from-dictionary? "word"))))
+        (with-redefs [dictionary/word-exist? (fn [input] true)]
+            (is (is-word-from-dictionary? "word")))))
+
+(def test-word
+ {:description
+  "For details, see the universal Glossary.",
+  :use 1,
+  :copyrighted 0,
+  :source "The Glossary",
+  :internal 0,
+  :incorrect_forms "",
+  :term "abend",
+  :product nil,
+  :class "adjective",
+  :see_also "",
+  :correct_forms "",
+  :verified 1})
+
+(deftest test-return-words-from-dictionary
+    "Check the behaviour of function clj-dopey.irc-bot/return-words-from-dictionary"
+    (testing "the function return-words-from-dictionary"
+        (with-redefs [dictionary/find-word (fn [input] (dictionary/correct-forms test-word))]
+            (is (= (return-words-from-dictionary "test") (dictionary/correct-forms test-word))))))
+
