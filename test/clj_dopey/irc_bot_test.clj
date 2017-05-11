@@ -13,6 +13,7 @@
 (ns clj-dopey.irc-bot-test
   (:require [clojure.test         :refer :all]
             [clj-dopey.irc-bot    :refer :all]
+            [clj-dopey.dyncfg     :as dyncfg]
             [clj-dopey.dictionary :as dictionary]))
 
 ;
@@ -238,3 +239,19 @@
             (is (not (more-words-like-this? ""))) ; no wildchars
 )))
 
+(deftest test-dictionary-status
+    "Check the behaviour of function clj-dopey.irc-bot/dictionary-status"
+    (testing "the function dictionary-status"
+        (with-redefs [dictionary/term-count (fn [] 42)]
+            (is (= (dictionary-status) "Number of terms in dictionary: 42")))))
+
+(deftest test-get-input
+    "Check the behaviour of function clj-dopey.irc-bot/get-input"
+    (testing "the function get-input"
+        (reset! dyncfg/configuration {:bot {:prefix "?"}}) 
+        (reset! dyncfg/bot-nick "bot")
+        (are [x in-channel? input-text] (= x (get-input in-channel? input-text))
+            ""     false ""
+            "test" false "test"
+            "test" true  "?test"
+            "test" true  "bot: test")))
