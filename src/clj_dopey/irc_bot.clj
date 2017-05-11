@@ -100,6 +100,18 @@
             {:prefix ""
              :response ""})))
 
+(defn reply-to-incoming-message
+    [connection text target nick host command incoming-message]
+    (let [reply  (create-reply incoming-message)
+          output (prepare-reply-text incoming-message nick text)]
+          (if (seq? (:response output))
+              (doseq [r (:response output)]
+         	 (irc/reply connection reply
+         		  (str (:prefix output) r)))
+              (irc/reply connection reply
+    			  (str (:prefix output) (:response output))
+))))
+    
 (defn on-incoming-message
     [connection incoming-message]
     (let [{text    :text
@@ -110,15 +122,7 @@
            (log/info (str "Received message from" nick "to" target ":" text "(" host command ")"))
            (log/info incoming-message)
            (if (message-for-me? @dyncfg/bot-nick (-> @dyncfg/configuration :bot :prefix) incoming-message)
-               (let [reply  (create-reply incoming-message)
-                     output (prepare-reply-text incoming-message nick text)]
-                     (if (seq? (:response output))
-                         (doseq [r (:response output)]
-				 (irc/reply connection reply
-					  (str (:prefix output) r)))
-		         (irc/reply connection reply
-				  (str (:prefix output) (:response output))
-))))))
+               (reply-to-incoming-message connection text target nick host command incoming-message))))
 
 (defn send-message
     [recipients target message-text]
