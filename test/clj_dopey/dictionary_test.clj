@@ -299,3 +299,47 @@
         (with-redefs [select-words (fn [word use-like] [term4])]
             (is (= (first (find-word "word")) (unknown-forms term4)))))))
 
+(deftest test-find-word-like-this
+    "Checks the function find-word-like-this"
+    (testing "the function find-word-like-this"
+        (let [term1 {:class           "class"
+                     :use             0
+                     :description     "description"
+                     :source          "source"
+                     :correct-forms   "correct-forms"
+                     :incorrect-forms "incorrect-forms"
+                     :see-also        "see also"
+                     :product         "product"}
+              term2 {:class           "class"
+                     :use             1
+                     :description     "description"
+                     :source          "source"
+                     :correct-forms   "correct-forms"
+                     :incorrect-forms "incorrect-forms"
+                     :see-also        "see also"
+                     :product         "product"}
+              term3 {:class           "class"
+                     :use             2
+                     :description     "description"
+                     :source          "source"
+                     :correct-forms   "correct-forms"
+                     :incorrect-forms "incorrect-forms"
+                     :see-also        "see also"
+                     :product         "product"}
+              term4 {:class           "class"
+                     :use             42
+                     :description     "description"
+                     :source          "source"
+                     :correct-forms   "correct-forms"
+                     :incorrect-forms "incorrect-forms"
+                     :see-also        "see also"
+                     :product         "product"}]
+        (with-redefs [select-words (fn [word use-like] [term1])]
+            (is (= (first (find-word-like-this "word")) (correct-forms term1))))
+        (with-redefs [select-words (fn [word use-like] [term2])]
+            (is (= (first (find-word-like-this "word")) (incorrect-forms term2))))
+        (with-redefs [select-words (fn [word use-like] [term3])]
+            (is (= (first (find-word-like-this "word")) (preferred-forms term3))))
+        (with-redefs [select-words (fn [word use-like] [term4])]
+            (is (= (first (find-word-like-this "word")) (unknown-forms term4)))))))
+
