@@ -88,6 +88,16 @@
          (print-field "see also"        w :see_also)
          (print-field "product"         w :product)))
 
+(defn unknown-forms
+    [w]
+    (str reset
+         (print-field "class"           w :class)
+         (use-it                        w)
+         (print-field "description"     w :description)
+         (print-field "source"          w :source)
+         (print-field "see also"        w :see_also)
+         (print-field "product"         w :product)))
+
 (defn find-word
     [word]
     (let [words (db-interface/select-words word false)]
@@ -96,7 +106,8 @@
             (condp = (:use w)
                 0 (correct-forms w)
                 1 (incorrect-forms w)
-                2 (preferred-forms w)))))
+                2 (preferred-forms w)
+                  (unknown-forms w)))))
 
 (defn find-word-like-this
     [word]
