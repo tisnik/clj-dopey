@@ -242,6 +242,19 @@
                     :product         "product"}]
         (is (= java.lang.String (type (preferred-forms term)))))))
 
+(deftest test-unknown-forms-return-value
+    "Checks the function unknown-forms"
+    (testing "the function unknown-forms"
+        (let [term {:class           "class"
+                    :use             42
+                    :description     "description"
+                    :source          "source"
+                    :correct-forms   "correct-forms"
+                    :incorrect-forms "incorrect-forms"
+                    :see-also        "see also"
+                    :product         "product"}]
+        (is (= java.lang.String (type (unknown-forms term)))))))
+
 (deftest test-find-word
     "Checks the function find-word"
     (testing "the function find-word"
@@ -268,11 +281,21 @@
                      :correct-forms   "correct-forms"
                      :incorrect-forms "incorrect-forms"
                      :see-also        "see also"
+                     :product         "product"}
+              term4 {:class           "class"
+                     :use             42
+                     :description     "description"
+                     :source          "source"
+                     :correct-forms   "correct-forms"
+                     :incorrect-forms "incorrect-forms"
+                     :see-also        "see also"
                      :product         "product"}]
         (with-redefs [select-words (fn [word use-like] [term1])]
             (is (= (first (find-word "word")) (correct-forms term1))))
         (with-redefs [select-words (fn [word use-like] [term2])]
             (is (= (first (find-word "word")) (incorrect-forms term2))))
         (with-redefs [select-words (fn [word use-like] [term3])]
-            (is (= (first (find-word "word")) (preferred-forms term3)))))))
+            (is (= (first (find-word "word")) (preferred-forms term3))))
+        (with-redefs [select-words (fn [word use-like] [term4])]
+            (is (= (first (find-word "word")) (unknown-forms term4)))))))
 
