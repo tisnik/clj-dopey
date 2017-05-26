@@ -117,7 +117,8 @@
             (condp = (:use w)
                 0 (correct-forms w)
                 1 (incorrect-forms w)
-                2 (preferred-forms w)))))
+                2 (preferred-forms w)
+                  (unknown-forms w)))))
 
 (defn find-words-like-this
     [word]
