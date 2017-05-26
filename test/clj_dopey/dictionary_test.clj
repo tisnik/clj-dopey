@@ -202,3 +202,42 @@
         (is (= java.lang.String (type (use-it {:term "term" :use 1}))))
         (is (= java.lang.String (type (use-it {:term "term" :use 2}))))))
 
+(deftest test-incorrect-forms-return-value
+    "Checks the function incorrect-forms"
+    (testing "the function incorrect-forms"
+        (let [term {:class           "class"
+                    :use             1
+                    :description     "description"
+                    :source          "source"
+                    :correct-forms   "correct-forms"
+                    :incorrect-forms "incorrect-forms"
+                    :see-also        "see also"
+                    :product         "product"}]
+        (is (= java.lang.String (type (incorrect-forms term)))))))
+
+(deftest test-correct-forms-return-value
+    "Checks the function correct-forms"
+    (testing "the function correct-forms"
+        (let [term {:class           "class"
+                    :use             1
+                    :description     "description"
+                    :source          "source"
+                    :correct-forms   "correct-forms"
+                    :incorrect-forms "incorrect-forms"
+                    :see-also        "see also"
+                    :product         "product"}]
+        (is (= java.lang.String (type (correct-forms term)))))))
+
+(deftest test-preferred-forms-return-value
+    "Checks the function preferred-forms"
+    (testing "the function preferred-forms"
+        (let [term {:class           "class"
+                    :use             1
+                    :description     "description"
+                    :source          "source"
+                    :correct-forms   "correct-forms"
+                    :incorrect-forms "incorrect-forms"
+                    :see-also        "see also"
+                    :product         "product"}]
+        (is (= java.lang.String (type (preferred-forms term)))))))
+
