@@ -12,7 +12,8 @@
 
 (ns clj-dopey.importer-test
   (:require [clojure.test :refer :all]
-            [clj-dopey.importer :refer :all]))
+            [clj-dopey.importer :refer :all]
+            [clj-dopey.db-interface :refer :all]))
 
 ;
 ; Common functions used by tests.
@@ -79,4 +80,30 @@
         (is (= 0 (parse-use-it "no")))
         (is (= 0 (parse-use-it "No")))
         (is (= 2 (parse-use-it "with caution")))))
+
+(deftest test-get-word-class
+    "Check the function get-word-class"
+    (testing "Function get-word-class"
+        (with-redefs [select-word-class-id (fn [input] "verb")]
+            (is (nil? (get-word-class nil)))
+            (is (= "verb" (get-word-class 1))))))
+
+(deftest test-get-word-class-exception-handling
+    "Check the function get-word-class"
+    (testing "Function get-word-class"
+        (with-redefs [select-word-class-id (fn [input] (throw (new Exception "exception")))]
+            (is (nil? (get-word-class 42))))))
+
+(deftest test-get-source
+    "Check the function get-source"
+    (testing "Function get-source"
+        (with-redefs [select-source-id (fn [input] "Glossary")]
+            (is (nil? (get-source nil)))
+            (is (= "Glossary" (get-source 1))))))
+
+(deftest test-get-source-exception-handling
+    "Check the function get-source"
+    (testing "Function get-source"
+        (with-redefs [select-source-id (fn [input] (throw (new Exception "exception")))]
+            (is (nil? (get-source 42))))))
 
