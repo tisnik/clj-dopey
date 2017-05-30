@@ -273,7 +273,7 @@
         (is (= (prepare-reply-text  {:target ""} "bot" "help")  {:prefix nil :response "help message"}))
         (is (= (prepare-reply-text  {:target "#channel"} "bot" "bot: help") {:prefix "bot: " :response "help message"}))))
 
-(deftest test-prepare-reply-text-dictionary-status
+(deftest test-prepare-reply-text-status
     "Check the behaviour of function clj-dopey.irc-bot/prepare-reply-text"
     (testing "the function prepare-reply-text"
         (reset! dyncfg/configuration {:bot {:prefix "?" :help "help message"}}) 
@@ -283,7 +283,7 @@
             (is (= (prepare-reply-text  {:target ""} "bot" "status")  {:prefix nil :response "status reply"}))
             (is (= (prepare-reply-text  {:target "#channel"} "bot" "bot: status") {:prefix "bot: " :response "status reply"})))))
 
-(deftest test-prepare-reply-text-dictionary-rainbow
+(deftest test-prepare-reply-text-rainbow
     "Check the behaviour of function clj-dopey.irc-bot/prepare-reply-text"
     (testing "the function prepare-reply-text"
         (reset! dyncfg/configuration {:bot {:prefix "?" :help "help message"}}) 
@@ -292,4 +292,11 @@
             (is (= (prepare-reply-text  {:target ""} "" "rainbow")     {:prefix nil :response "rainbow reply"}))
             (is (= (prepare-reply-text  {:target ""} "bot" "rainbow")  {:prefix nil :response "rainbow reply"}))
             (is (= (prepare-reply-text  {:target "#channel"} "bot" "bot: rainbow") {:prefix "bot: " :response "rainbow reply"})))))
+
+(deftest test-prepare-reply-text-unknown-command
+    "Check the behaviour of function clj-dopey.irc-bot/prepare-reply-text"
+    (testing "the function prepare-reply-text"
+        (reset! dyncfg/configuration {:bot {:prefix "?" :help "help message"}}) 
+        (reset! dyncfg/bot-nick "bot")
+        (is (= (prepare-reply-text {:target ""} "" "") {:prefix nil :response "Command not understood or term not found"}))))
 
