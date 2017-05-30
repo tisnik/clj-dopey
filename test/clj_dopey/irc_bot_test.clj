@@ -300,3 +300,12 @@
         (reset! dyncfg/bot-nick "bot")
         (is (= (prepare-reply-text {:target ""} "" "") {:prefix nil :response "Command not understood or term not found"}))))
 
+(deftest test-prepare-reply-text-exception-handling
+    "Check the behaviour of function clj-dopey.irc-bot/prepare-reply-text"
+    (testing "the function prepare-reply-text"
+        (reset! dyncfg/configuration {:bot {:prefix "?" :help "help message"}}) 
+        (reset! dyncfg/bot-nick "bot")
+        (is (= (prepare-reply-text {:target ""} "" nil)  {:prefix "" :response ""}))
+        (is (= (prepare-reply-text {:target ""} nil nil) {:prefix "" :response ""}))
+        (is (= (prepare-reply-text nil "" "")            {:prefix "" :response ""}))))
+
