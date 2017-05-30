@@ -49,3 +49,10 @@
     (testing "if the clj-dopey.core/-main definition exists."
         (is (callable? 'clj-dopey.core/-main))))
 
+(deftest test-show-help
+    "Check the function show-help"
+    (testing "the function show-help"
+       ; use mock instead of println function
+        (with-redefs [println (fn [string] string)]
+            (is (= "help"         (show-help "help")))
+            (is (= "line1\nline2" (show-help "line1\nline2"))))))
