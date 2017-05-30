@@ -283,3 +283,13 @@
             (is (= (prepare-reply-text  {:target ""} "bot" "status")  {:prefix nil :response "status reply"}))
             (is (= (prepare-reply-text  {:target "#channel"} "bot" "bot: status") {:prefix "bot: " :response "status reply"})))))
 
+(deftest test-prepare-reply-text-dictionary-rainbow
+    "Check the behaviour of function clj-dopey.irc-bot/prepare-reply-text"
+    (testing "the function prepare-reply-text"
+        (reset! dyncfg/configuration {:bot {:prefix "?" :help "help message"}}) 
+        (reset! dyncfg/bot-nick "bot")
+        (with-redefs [get-rainbow-as-message (fn [] "rainbow reply")]
+            (is (= (prepare-reply-text  {:target ""} "" "rainbow")     {:prefix nil :response "rainbow reply"}))
+            (is (= (prepare-reply-text  {:target ""} "bot" "rainbow")  {:prefix nil :response "rainbow reply"}))
+            (is (= (prepare-reply-text  {:target "#channel"} "bot" "bot: rainbow") {:prefix "bot: " :response "rainbow reply"})))))
+
