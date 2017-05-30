@@ -273,3 +273,13 @@
         (is (= (prepare-reply-text  {:target ""} "bot" "help")  {:prefix nil :response "help message"}))
         (is (= (prepare-reply-text  {:target "#channel"} "bot" "bot: help") {:prefix "bot: " :response "help message"}))))
 
+(deftest test-prepare-reply-text-dictionary-status
+    "Check the behaviour of function clj-dopey.irc-bot/prepare-reply-text"
+    (testing "the function prepare-reply-text"
+        (reset! dyncfg/configuration {:bot {:prefix "?" :help "help message"}}) 
+        (reset! dyncfg/bot-nick "bot")
+        (with-redefs [dictionary-status (fn [] "status reply")]
+            (is (= (prepare-reply-text  {:target ""} "" "status")     {:prefix nil :response "status reply"}))
+            (is (= (prepare-reply-text  {:target ""} "bot" "status")  {:prefix nil :response "status reply"}))
+            (is (= (prepare-reply-text  {:target "#channel"} "bot" "bot: status") {:prefix "bot: " :response "status reply"})))))
+
