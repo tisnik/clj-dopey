@@ -44,6 +44,12 @@
     (println "Usage:")
     (println summary))
 
+(defn run-app
+    [summary show-help? import?]
+    (cond show-help? (show-help summary)
+          import?    (importer/import-data import?)
+          :else      (start-bot)))
+
 (defn -main
     "Entry point to this bot."
     [& args]
@@ -51,9 +57,8 @@
     (let [all-options (cli/parse-opts args cli-options)
           options     (all-options :options)
           show-help?  (options :help)
-          import?     (options :import)]
-          (cond show-help? (show-help (:summary all-options))
-                import?    (importer/import-data import?)
-                :else      (start-bot)))
+          import?     (options :import)
+          summary     (:summary all-options)]
+          (run-app summary show-help? import?))
     (log/info "Exiting from the main function"))
 
