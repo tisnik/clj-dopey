@@ -79,7 +79,9 @@
         (if (.startsWith input-text (-> @dyncfg/configuration :bot :prefix))
             (subs input-text 1)
             (subs input-text (+ 2 (count @dyncfg/bot-nick))))
-        input-text))
+        (if (.startsWith input-text "?")
+            (subs input-text 1)
+            input-text)))
 
 (defn get-prefix
     [in-channel? nick]
