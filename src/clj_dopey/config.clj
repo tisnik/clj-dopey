@@ -17,34 +17,34 @@
 (require '[clojure-ini.core :as clojure-ini])
 
 (defn parse-int
-    "Parse the given string as an integer number."
-    [string]
-    (java.lang.Integer/parseInt string))
+  "Parse the given string as an integer number."
+  [string]
+  (java.lang.Integer/parseInt string))
 
 (defn parse-float
-    "Parse the given string as a float number."
-    [string]
-    (java.lang.Float/parseFloat string))
+  "Parse the given string as a float number."
+  [string]
+  (java.lang.Float/parseFloat string))
 
 (defn parse-boolean
-    "Parse the given string as a boolean value."
-    [^String string]
-    (or (= string "true")
-        (= string "True")))
+  "Parse the given string as a boolean value."
+  [^String string]
+  (or (= string "true")
+      (= string "True")))
 
 (defn update-server-configuration
-    "Update server configuration from the loaded data."
-    [configuration]
-    (update-in configuration [:server :port] parse-int))
+  "Update server configuration from the loaded data."
+  [configuration]
+  (update-in configuration [:server :port] parse-int))
 
 (defn load-configuration
-    "Load configuration from the provided INI file."
-    [ini-file-name]
-    (-> (clojure-ini/read-ini ini-file-name :keywordize? true)
-        update-server-configuration))
+  "Load configuration from the provided INI file."
+  [ini-file-name]
+  (-> (clojure-ini/read-ini ini-file-name :keywordize? true)
+      update-server-configuration))
 
 (defn print-configuration
-    "Print actual configuration to the output."
-    [configuration]
-    (pprint/pprint configuration))
+  "Print actual configuration to the output."
+  [configuration]
+  (pprint/pprint configuration))
 
