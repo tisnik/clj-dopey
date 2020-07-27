@@ -26,39 +26,39 @@
 (require '[clj-dopey.importer    :as importer])
 
 (def cli-options
-    "Definitions of all command line options that are  currenty supported."
-    ;; an option with a required argument
-    [["-h"   "--help"                       "show help"                   :id :help]
-     ["-i"   "--import datafile.csv"        "import data into dictionary" :id :import]])
+  "Definitions of all command line options that are  currenty supported."
+  ;; an option with a required argument
+  [["-h"   "--help"                       "show help"                   :id :help]
+   ["-i"   "--import datafile.csv"        "import data into dictionary" :id :import]])
 
 (defn start-bot
-    []
-    (let [config (config/load-configuration "config.ini")]
-         (reset! dyncfg/configuration config)
-         (config/print-configuration config)
-         (irc-bot/start-irc-bot (:server config))))
+  []
+  (let [config (config/load-configuration "config.ini")]
+       (reset! dyncfg/configuration config)
+       (config/print-configuration config)
+       (irc-bot/start-irc-bot (:server config))))
 
 (defn show-help
-    "Show help and all supported CLI flags."
-    [summary]
-    (println "Usage:")
-    (println summary))
+  "Show help and all supported CLI flags."
+  [summary]
+  (println "Usage:")
+  (println summary))
 
 (defn run-app
-    [summary show-help? import?]
-    (cond show-help? (show-help summary)
-          import?    (importer/import-data import?)
-          :else      (start-bot)))
+  [summary show-help? import?]
+  (cond show-help? (show-help summary)
+        import?    (importer/import-data import?)
+        :else      (start-bot)))
 
 (defn -main
-    "Entry point to this bot."
-    [& args]
-    (log/info "Starting the application")
-    (let [all-options (cli/parse-opts args cli-options)
-          options     (all-options :options)
-          show-help?  (options :help)
-          import?     (options :import)
-          summary     (:summary all-options)]
-          (run-app summary show-help? import?))
-    (log/info "Exiting from the main function"))
+  "Entry point to this bot."
+  [& args]
+  (log/info "Starting the application")
+  (let [all-options (cli/parse-opts args cli-options)
+        options     (all-options :options)
+        show-help?  (options :help)
+        import?     (options :import)
+        summary     (:summary all-options)]
+    (run-app summary show-help? import?))
+  (log/info "Exiting from the main function"))
 
