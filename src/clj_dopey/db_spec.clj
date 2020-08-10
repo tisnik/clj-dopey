@@ -11,11 +11,11 @@
 ;
 
 (ns clj-dopey.db-spec
-    "Namespace that contains configuration of all JDBC sources.")
+  "Namespace that contains configuration of all JDBC sources.")
 
 (def dopey-db
-    {:classname   "org.sqlite.JDBC"
-     :subprotocol "sqlite"
-     :subname     "dopey.db"
-    })
+  {:classname   "org.sqlite.JDBC",
+   :subprotocol "sqlite",
+   :subname     "dopey.db"
+  })
 
