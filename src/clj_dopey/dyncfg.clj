@@ -13,11 +13,11 @@
 (ns clj-dopey.dyncfg)
 
 (def configuration
-    (atom nil))
+  (atom nil))
 
 (def connection
-    (atom nil))
+  (atom nil))
 
 (def bot-nick
-    (atom nil))
+  (atom nil))
 
