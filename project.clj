@@ -33,6 +33,7 @@
   :plugins [[test2junit "1.1.0"]
             [codox "0.8.11"]
             [test2junit "1.1.0"]
-            [lein-cloverage "1.0.6"]]
+            [lein-cloverage "1.0.6"]
+            [lein-clean-m2 "0.1.2"]]
   :profiles {:uberjar {:aot :all}})
 
